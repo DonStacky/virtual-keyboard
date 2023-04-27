@@ -47,7 +47,7 @@
   border: 1px solid black;
   font-family: arial, sans-serif;
   letter-spacing: 2px;
-  transition: 0.3s;
+  transition: 0.1s;
   cursor: pointer;
   box-shadow: 3px 3px 5px 0px #292828;
 }
@@ -95,4 +95,7 @@
 
 .key:active {
   box-shadow: 0px 0px 0px 0px black;
+}
+.keyboard__key--active {
+  background-color: darkslategrey;
 }
