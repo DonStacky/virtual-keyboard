@@ -24,6 +24,9 @@
   margin-bottom: 10px;
 }
 .keyboard {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
   text-align: start;
   width: 740px;
   height: 250px;
@@ -31,19 +34,11 @@
   border: 3px solid black;
   border-radius: 5px;
   background-color: darkgray;
-}
-.keyboard__row {
-  display: flex;
-  justify-content: flex-start;
   margin-bottom: var(--margin-main);
   gap: var(--margin-main);
 }
-.keyboard__middle-addkey,
-.keyboard__key,
-.keyboard__long-addkey,
-.keyboard__short-addkey,
-.keyboard__space {
-  display: flex;
+.key {
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   color: aliceblue;
@@ -52,23 +47,26 @@
   border: 1px solid black;
   font-family: arial, sans-serif;
   letter-spacing: 2px;
+  transition: 0.3s;
+  cursor: pointer;
+  box-shadow: 3px 3px 5px 0px #292828;
 }
 .keyboard__key {
   width: 40px;
   background-color: dimgrey;
 }
-.keyboard__long-addkey {
+.keyboard__long-key {
   width: 126px;
   background-color: #292828;
 }
-.keyboard__short-addkey {
+.keyboard__short-key {
   width: 60px;
   background-color: #292828;
 }
-.keyboard__short-addkey:last-of-type {
+.keyboard__short-key:last-of-type {
   margin-right: 0px;
 }
-.keyboard__middle-addkey {
+.keyboard__middle-key {
   width: 86px;
   background-color: #292828;
 }
@@ -76,9 +74,25 @@
   width: 356px;
   background-color: dimgrey;
 }
-.keyboard__row--4 .keyboard__key:nth-child(12) {
+.keyboard__key:nth-child(54),
+.keyboard__key:nth-child(56),
+.keyboard__key:nth-child(57),
+.keyboard__key:nth-child(58),
+.keyboard__key:nth-child(60),
+.keyboard__key:nth-child(61),
+.keyboard__key:nth-child(62),
+.keyboard__key:nth-child(63),
+.keyboard__key:nth-child(64) {
   background-color: #292828;
 }
 .keyboard__row--5 .keyboard__key {
   background-color: #292828;
+}
+
+.key:hover {
+  background-color: darkslategrey;
+}
+
+.key:active {
+  box-shadow: 0px 0px 0px 0px black;
 }
