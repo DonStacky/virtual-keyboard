@@ -1,4 +1,4 @@
-import { keyboard } from './main-layout.js';
+import keyboard from './main-layout.js'; // eslint-disable-line
 
 const header = document.createElement('h1');
 header.textContent = 'RSS Виртуальная клавиатура';
@@ -10,8 +10,8 @@ document.body.append(textarea);
 
 keyboard.init();
 window.addEventListener('click', () => {
-  console.log(keyboard);
-})
+  // console.log(keyboard);
+});
 
 const footer = document.createElement('p');
 footer.innerHTML = 'Клавиатура создана в операционной системе Windows<br>Для переключения языка комбинация: левыe ctrl + alt';

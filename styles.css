@@ -55,6 +55,10 @@
   width: 40px;
   background-color: dimgrey;
 }
+.keyboard__special-key {
+  width: 40px;
+  background-color: #292828;
+}
 .keyboard__long-key {
   width: 126px;
   background-color: #292828;
