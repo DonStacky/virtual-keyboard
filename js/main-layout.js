@@ -2,14 +2,9 @@ const keyboard = {
 
   elements: {
     main: null,
-    // keysContainer: null,
     keys: [],
   },
 
-  eventHandlers: {
-    oninput: null,
-    onclose: null,
-  },
   properties: {
     value: '',
     capsLock: false,
@@ -19,9 +14,7 @@ const keyboard = {
     this.elements.main = document.createElement('div');
     this.elements.main.classList.add('keyboard');
     this.elements.main.appendChild(this.createKeys());
-
     this.elements.keys = this.elements.main.querySelectorAll('.keyboard__key');
-
     document.body.appendChild(this.elements.main);
   },
 
@@ -54,17 +47,20 @@ const keyboard = {
       if (shortKey.includes(item)) {
         keyElement.classList.add('keyboard__short-key');
         keyElement.textContent = item;
-        // this.properties.value = item;
+
+        if (item === 'Tab') {
+          keyElement.addEventListener('click', () => {
+            this.properties.value += '    ';
+          });
+        }
       } else if (longKey.includes(item)) {
         keyElement.classList.add('keyboard__long-key');
         keyElement.textContent = item;
-        // this.properties.value = item;
 
         if (item === 'Backspace') {
           keyElement.addEventListener('click', () => {
             this.properties.value = this.properties.value
               .substring(0, this.properties.value.length - 1);
-            this.triggerEvent('oninput');
           });
         }
 
@@ -75,42 +71,35 @@ const keyboard = {
           });
         }
 
-        if (item === 'Enter') {
-          keyElement.addEventListener('click', () => {
-            this.properties.value += '\n';
-            this.triggerEvent('oninput');
-          });
-        }
-
         if (item === 'Space') {
           keyElement.textContent = '';
           keyElement.classList.add('keyboard__space');
           keyElement.addEventListener('click', () => {
             this.properties.value += ' ';
-            this.triggerEvent('oninput');
           });
         }
       } else if (middleKey.includes(item)) {
         keyElement.classList.add('keyboard__middle-key');
-
         if (item === 'ShiftRight') {
           keyElement.textContent = 'Shift';
         } else {
           keyElement.textContent = item;
         }
 
-        // this.properties.value = item;
+        if (item === 'Enter') {
+          keyElement.addEventListener('click', () => {
+            this.properties.value += '\n';
+          });
+        }
       } else if (specialKey.includes(item)) {
         keyElement.classList.add('keyboard__special-key');
         keyElement.textContent = item;
       } else if (defaultKey.includes(item)) {
         keyElement.classList.add('keyboard__key');
         keyElement.textContent = item;
-
         keyElement.addEventListener('click', () => {
           this.properties.value += this.properties.capsLock
             ? item.toUpperCase() : item.toLowerCase();
-          this.triggerEvent('oninput');
         });
       }
 
@@ -128,10 +117,6 @@ const keyboard = {
       key.textContent = this.properties.capsLock
         ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
     });
-  },
-
-  triggerEvent(handlerName) {
-    console.log(`Event triggered. Handler Name: ${handlerName}`); // eslint-disable-line
   },
 };
 export default keyboard;

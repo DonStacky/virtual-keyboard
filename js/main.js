@@ -9,8 +9,10 @@ textarea.classList.add('textarea');
 document.body.append(textarea);
 
 keyboard.init();
-window.addEventListener('click', () => {
-  // console.log(keyboard);
+
+document.querySelector('.keyboard').addEventListener('click', () => {
+  // console.log(keyboard.properties.value);
+  document.querySelector('.textarea').value = keyboard.properties.value;
 });
 
 const footer = document.createElement('p');
