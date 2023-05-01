@@ -11,18 +11,39 @@ const keyboard = {
       '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
       '[', ']', '\\', ';', "'", ',', '.', '/',
     ],
+    shiftRuKey: [
+      'Ё', '!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+',
+      'Х', 'Ъ', '/', 'Ж', 'Э', 'Б', 'Ю', ',',
+    ],
+    unshiftRuKey: [
+      '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
+      'х', 'ъ', '\\', 'ж', 'э', 'б', 'ю', '.',
+    ],
+    enLang: [
+      '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
+      'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\',
+      'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'",
+      'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/',
+    ],
+    rusLang: [
+      '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
+      'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '\\',
+      'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э',
+      'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.',
+    ],
   },
 
   properties: {
     value: '',
     capsLock: false,
     shift: false,
+    lang: 'en',
   },
 
-  init() {
+  init(lang = 'en') {
     this.elements.main = document.createElement('div');
     this.elements.main.classList.add('keyboard');
-    this.elements.main.appendChild(this.createKeys());
+    this.elements.main.appendChild(this.createKeys(lang));
     this.elements.keys = this.elements.main.querySelectorAll('.keyboard__key');
     document.querySelector('.footer').before(this.elements.main);
   },
@@ -59,6 +80,10 @@ const keyboard = {
         if (item === 'Delete') {
           keyElement.textContent = 'Del';
           keyElement.setAttribute('name', 'Delete');
+          keyElement.addEventListener('click', () => {
+            const position = document.querySelector('.textarea').selectionStart;
+            this.properties.value = `${this.properties.value.slice(0, position)}${this.properties.value.slice(position + 1)}`;
+          });
         } else if (item === 'Tab') {
           keyElement.addEventListener('click', () => {
             this.properties.value += '\t';
@@ -70,8 +95,8 @@ const keyboard = {
 
         if (item === 'Backspace') {
           keyElement.addEventListener('click', () => {
-            this.properties.value = this.properties.value
-              .substring(0, this.properties.value.length - 1);
+            const position = document.querySelector('.textarea').selectionStart;
+            this.properties.value = `${this.properties.value.slice(0, position - 1)}${this.properties.value.slice(position)}`;
           });
         }
 
@@ -121,15 +146,27 @@ const keyboard = {
           keyElement.setAttribute('name', 'MetaLeft');
         } else if (item === 'ArrowLeft') {
           keyElement.textContent = '←';
+          keyElement.addEventListener('click', () => {
+            this.properties.value += '←';
+          });
           keyElement.setAttribute('name', 'ArrowLeft');
         } else if (item === 'ArrowRight') {
           keyElement.textContent = '→';
+          keyElement.addEventListener('click', () => {
+            this.properties.value += '→';
+          });
           keyElement.setAttribute('name', 'ArrowRight');
         } else if (item === 'ArrowUp') {
           keyElement.textContent = '↑';
+          keyElement.addEventListener('click', () => {
+            this.properties.value += '↑';
+          });
           keyElement.setAttribute('name', 'ArrowUp');
         } else if (item === 'ArrowDown') {
           keyElement.textContent = '↓';
+          keyElement.addEventListener('click', () => {
+            this.properties.value += '↓';
+          });
           keyElement.setAttribute('name', 'ArrowDown');
         } else {
           keyElement.textContent = item;
@@ -141,7 +178,7 @@ const keyboard = {
 
       fragment.appendChild(keyElement);
     });
-    /// //////////////////////////////////////////////////////////////////////
+
     document.addEventListener('keydown', (event) => {
       if (event.code === 'Space') {
         this.keydown('.keyboard__space', event);
@@ -166,6 +203,8 @@ const keyboard = {
             item.classList.add('keyboard__key--active');
           }
         });
+        const position = document.querySelector('.textarea').selectionStart;
+        this.properties.value = `${this.properties.value.slice(0, position)}${this.properties.value.slice(position + 1)}`;
       } else if (event.code === 'MetaLeft') {
         document.querySelectorAll('.keyboard__special-key').forEach((item) => {
           if (item.getAttribute('name') === 'MetaLeft') {
@@ -184,7 +223,7 @@ const keyboard = {
             item.classList.add('keyboard__key--active');
           }
         });
-      } else if (event.code === 'ShiftRight' && !event.repeat) {
+      } else if (event.code === 'ShiftRight' && !event.repeat && !this.properties.shift) {
         this.toggleShift();
         document.querySelectorAll('.keyboard__middle-key').forEach((item) => {
           if (item.getAttribute('name') === 'ShiftRight') {
@@ -195,24 +234,28 @@ const keyboard = {
         document.querySelectorAll('.keyboard__special-key').forEach((item) => {
           if (item.getAttribute('name') === 'ArrowLeft') {
             item.classList.add('keyboard__key--active');
+            this.properties.value += '←';
           }
         });
       } else if (event.code === 'ArrowRight') {
         document.querySelectorAll('.keyboard__special-key').forEach((item) => {
           if (item.getAttribute('name') === 'ArrowRight') {
             item.classList.add('keyboard__key--active');
+            this.properties.value += '→';
           }
         });
       } else if (event.code === 'ArrowUp') {
         document.querySelectorAll('.keyboard__special-key').forEach((item) => {
           if (item.getAttribute('name') === 'ArrowUp') {
             item.classList.add('keyboard__key--active');
+            this.properties.value += '↑';
           }
         });
       } else if (event.code === 'ArrowDown') {
         document.querySelectorAll('.keyboard__special-key').forEach((item) => {
           if (item.getAttribute('name') === 'ArrowDown') {
             item.classList.add('keyboard__key--active');
+            this.properties.value += '↓';
           }
         });
       } else if (event.key === 'Shift' && !event.repeat) {
@@ -233,12 +276,26 @@ const keyboard = {
       } else if (event.key === 'Backspace') {
         event.preventDefault();
         this.keydown('.keyboard__long-key', event);
-        this.properties.value = this.properties.value
-          .substring(0, this.properties.value.length - 1);
+        const position = document.querySelector('.textarea').selectionStart;
+        this.properties.value = `${this.properties.value.slice(0, position - 1)}${this.properties.value.slice(position)}`;
       } else if (defaultKey.includes(event.key.toLowerCase())) {
         event.preventDefault();
-        this.keydown('.keyboard__key', event);
-        this.properties.value += event.key;
+        if (this.properties.lang === 'en') {
+          this.keydown('.keyboard__key', event);
+        }
+        if (this.properties.lang === 'en' && event.key) {
+          this.properties.value += event.key;
+        } else if (this.properties.lang === 'ru') {
+          if (this.properties.shift === false) {
+            let index = 0;
+            document.querySelectorAll('.keyboard__key').forEach(() => {
+              if (event.key === this.elements.enLang[index]) {
+                this.properties.value += this.elements.rusLang[index];
+              }
+              index += 1;
+            });
+          }
+        }
       }
     });
 
@@ -271,7 +328,7 @@ const keyboard = {
             item.classList.remove('keyboard__key--active');
           }
         });
-      } else if (event.code === 'ShiftRight') {
+      } else if (event.code === 'ShiftRight' && this.properties.shift) {
         this.toggleShift();
         document.querySelectorAll('.keyboard__middle-key').forEach((item) => {
           if (item.getAttribute('name') === 'ShiftRight') {
@@ -332,19 +389,68 @@ const keyboard = {
   },
 
   toggleShift() {
-    this.properties.shift = !this.properties.shift;
+    if (this.properties.lang === 'en') {
+      this.properties.shift = !this.properties.shift;
+      let i = 0;
+      this.elements.keys.forEach((item) => {
+        const key = item;
+        if (this.elements.unshiftKey.includes(item.innerHTML)
+          || this.elements.shiftKey.includes(item.innerHTML)
+          || item.innerHTML === '&amp;' || item.innerHTML === '&lt;' || item.innerHTML === '&gt;') {
+          key.textContent = this.properties.shift
+            ? this.elements.shiftKey[i] : this.elements.unshiftKey[i];
+        } else {
+          key.textContent = this.properties.shift
+            ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
+          i -= 1;
+        }
+        i += 1;
+      });
+    } else if (this.properties.lang === 'ru') {
+      this.properties.shift = !this.properties.shift;
+      let i = 0;
+      this.elements.keys.forEach((item) => {
+        const key = item;
+        if (this.elements.unshiftRuKey.includes(item.innerHTML)
+          || this.elements.shiftRuKey.includes(item.innerHTML)) {
+          key.textContent = this.properties.shift
+            ? this.elements.shiftRuKey[i] : this.elements.unshiftRuKey[i];
+        } else {
+          key.textContent = this.properties.shift
+            ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
+          i -= 1;
+        }
+        i += 1;
+      });
+    }
+  },
+
+  toggleLang() {
+    if (this.properties.lang === 'en') {
+      this.properties.lang = 'ru';
+    } else {
+      this.properties.lang = 'en';
+    }
     let i = 0;
     this.elements.keys.forEach((item) => {
       const key = item;
-      if (this.elements.unshiftKey.includes(item.innerHTML)
-        || this.elements.shiftKey.includes(item.innerHTML)
-        || item.innerHTML === '&amp;' || item.innerHTML === '&lt;' || item.innerHTML === '&gt;') {
-        key.textContent = this.properties.shift
-          ? this.elements.shiftKey[i] : this.elements.unshiftKey[i];
-      } else {
-        key.textContent = this.properties.shift
-          ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
-        i -= 1;
+      if (this.elements.enLang.includes(item.innerHTML)
+        || this.elements.rusLang.includes(item.innerHTML)) {
+        key.textContent = this.properties.lang === 'en'
+          ? this.elements.enLang[i] : this.elements.rusLang[i];
+      }
+      i += 1;
+    });
+  },
+
+  setLang() {
+    let i = 0;
+    this.elements.keys.forEach((item) => {
+      const key = item;
+      if (this.elements.enLang.includes(item.innerHTML)
+        || this.elements.rusLang.includes(item.innerHTML)) {
+        key.textContent = this.properties.lang === 'en'
+          ? this.elements.enLang[i] : this.elements.rusLang[i];
       }
       i += 1;
     });
@@ -375,4 +481,5 @@ const keyboard = {
   },
 
 };
+
 export default keyboard;
