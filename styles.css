@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+}
+:root {
+  --margin-main: 6px;
+  }
+.wrapper {
+  max-width: 770px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 15px;
+  min-height: 100%;
+  height: auto;
+  overflow: hidden;
+  text-align: center;
+}
+.textarea {
+  width: 740px;
+  height: 200px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+}
+.keyboard {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  text-align: start;
+  width: 740px;
+  height: 250px;
+  padding: 5px;
+  border: 3px solid black;
+  border-radius: 5px;
+  background-color: darkgray;
+  margin-bottom: var(--margin-main);
+  gap: var(--margin-main);
+}
+.key {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: aliceblue;
+  height: 40px;
+  border-radius: 2px;
+  border: 1px solid black;
+  font-family: arial, sans-serif;
+  letter-spacing: 2px;
+  transition: 0.2s;
+  cursor: pointer;
+  box-shadow: 3px 5px 5px 0px #292828;
+}
+.keyboard__key {
+  width: 40px;
+  background-color: dimgrey;
+}
+.keyboard__special-key {
+  width: 40px;
+  background-color: #292828;
+}
+.keyboard__long-key {
+  width: 126px;
+  background-color: #292828;
+}
+.keyboard__short-key {
+  width: 60px;
+  background-color: #292828;
+}
+.keyboard__short-key:last-of-type {
+  margin-right: 0px;
+}
+.keyboard__middle-key {
+  width: 86px;
+  background-color: #292828;
+}
+.keyboard__space {
+  width: 356px;
+  background-color: dimgrey;
+}
+.keyboard__key:nth-child(54),
+.keyboard__key:nth-child(56),
+.keyboard__key:nth-child(57),
+.keyboard__key:nth-child(58),
+.keyboard__key:nth-child(60),
+.keyboard__key:nth-child(61),
+.keyboard__key:nth-child(62),
+.keyboard__key:nth-child(63),
+.keyboard__key:nth-child(64) {
+  background-color: #292828;
+}
+.keyboard__row--5 .keyboard__key {
+  background-color: #292828;
+}
+
+.key:hover {
+  background-color: darkslategrey;
+}
+
+.key:active {
+  box-shadow: 0px 0px 0px 0px black;
+}
+.keyboard__key--active {
+  background-color: darkslategrey;
+  box-shadow: 0px 0px 0px 0px black;
+}
